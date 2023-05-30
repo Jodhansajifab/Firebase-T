@@ -69,14 +69,14 @@ const LogInpage = () => {
   }
 
   const handleveiwchange = async() =>{
-    // try {
-    //   const querySnapshot = await getDocs(collection(db, "userDetails"));
-    //   querySnapshot.forEach((doc) => {
-    //   console.log(`${doc.id} => ${doc.data()}`);
-    //   });
-    // } catch (error) {
-    //   console.log(error)
-    // }
+    try {
+      const querySnapshot = await getDocs(collection(db, "userDetails"));
+      querySnapshot.forEach((doc) => {
+      console.log(`${doc.id} => ${doc.data()}`);
+      });
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -118,7 +118,7 @@ const LogInpage = () => {
       </div>
       <br />
 
-      <button onChange={handleveiwchange} >Veiw Saved</button>
+      <button onClick={handleveiwchange} >Veiw Saved</button>
     </>
   );
 };
