@@ -10,6 +10,7 @@ const LogInpage = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [location, setLocation] = useState("");
+  const [fetchedData, SetfetchedData] = useState("")
 
   const handlenamechange = (e) => {
     setName(e.target.value)
@@ -71,9 +72,13 @@ const LogInpage = () => {
   const handleveiwchange = async() =>{
     try {
       const querySnapshot = await getDocs(collection(db, "userDetails"));
+      const newData = []
       querySnapshot.forEach((doc) => {
-      console.log(`${doc.id} => ${doc.data()}`);
+      console.log(doc.data());
+      newData.push(doc.data());
       });
+      SetfetchedData(newData);
+      console.log(fetchedData)
     } catch (error) {
       console.log(error)
     }
@@ -119,6 +124,25 @@ const LogInpage = () => {
       <br />
 
       <button onClick={handleveiwchange} >Veiw Saved</button>
+
+      <div className="flex justify-center p-10">
+      {fetchedData.length > 0 ? (
+        <ul>
+          {fetchedData.map((item) => (
+            <li >
+             <>Name: </> {item.Name}
+             <br/>
+             <>Age: </>{item.Age}
+             <br/>
+             <>Location: </>{item.Location}
+             <br/>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No data available.</p>
+      )}
+    </div>
     </>
   );
 };
