@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useId } from "react";
 import firebase from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase.js";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { query, orderBy, limit } from "firebase/firestore";
-
+import { uid } from 'uid';
+ 
 const LogInpage = () => {
 
   const [User, setUser] = useState(null);
@@ -59,6 +60,7 @@ const LogInpage = () => {
     e.preventDefault();
     try {
       const docRef = await addDoc(collection(db, "userDetails"), {
+        id: uid(),
         Name : name,
         Age: age,
         Location: location
@@ -123,6 +125,10 @@ const LogInpage = () => {
     }
   }
 
+  const handleDelete = async() => {
+    await deleteDoc(doc(db, "userDetails", id));
+  }
+
   return (
     <>
       <div className="flex justify-between">
@@ -141,7 +147,7 @@ const LogInpage = () => {
         </button>
       </div>
 
-      <h2 className="text-2xl p-20">Enter the your personal details</h2>
+      <h2 className="text-2xl p-20">Enter the details to upload</h2>
 
       <div >
         <form className="flex justify-between" onSubmit={handleSubmit}>
@@ -165,14 +171,17 @@ const LogInpage = () => {
       <div className="flex justify-center p-10 ">
       {fetchedData.length > 0 ? (
         <ul>
-          {fetchedData.map((item, index) => (
-            <li key={index}>
+          {fetchedData.map((item) => (
+            <li key={item.id}>
              <>Name: </> {item.Name}
              <br/>
              <>Age: </>{item.Age}
              <br/>
              <>Location: </>{item.Location}
              <br/>
+             <br/>
+             <button>Edit</button>
+             <button onClick={handleDelete}>Delete</button>
             </li>
           ))}
         </ul>
