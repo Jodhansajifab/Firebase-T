@@ -3,6 +3,7 @@ import firebase from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase.js";
 import { collection, addDoc, getDocs } from "firebase/firestore";
+import { query, orderBy, limit } from "firebase/firestore";
 
 const LogInpage = () => {
 
@@ -69,16 +70,54 @@ const LogInpage = () => {
     }
   }
 
-  const handleveiwchange = async() =>{
+  const handleVeiwchange = async() =>{
     try {
       const querySnapshot = await getDocs(collection(db, "userDetails"));
       const newData = []
       querySnapshot.forEach((doc) => {
-      console.log(doc.data());
       newData.push(doc.data());
       });
       SetfetchedData(newData);
-      console.log(fetchedData)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleVeiwchangeAge = async() =>{
+    try {
+      const q = query(collection(db, "userDetails"), orderBy("Age"));
+      const querySnapshotsorted = await getDocs(q);
+      const newData = []
+      querySnapshotsorted.forEach((doc) => {
+      newData.push(doc.data());
+      });
+      SetfetchedData(newData);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleVeiwchangeName = async() =>{
+    try {
+      const q = query(collection(db, "userDetails"), orderBy("Name"));
+      const querySnapshotsorted = await getDocs(q);
+      const newData = []
+      querySnapshotsorted.forEach((doc) => {
+      newData.push(doc.data());
+      });
+      SetfetchedData(newData);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleVeiwchangeLocation = async() =>{
+    try {
+      const q = query(collection(db, "userDetails"), orderBy("Location"));
+      const querySnapshotsorted = await getDocs(q);
+      const newData = []
+      querySnapshotsorted.forEach((doc) => {
+      newData.push(doc.data());
+      });
+      SetfetchedData(newData);
     } catch (error) {
       console.log(error)
     }
@@ -90,25 +129,19 @@ const LogInpage = () => {
         {User ? (
           <p className="text-xl flex">
             Welcome..
-            <p className="font-bold underline decoration-sky-500">{User.email}</p>
+            <span className="font-bold underline decoration-sky-500">{User.email}</span>
             ...How are you?
           </p>
         ) : (
-          <> Wrong Credentials....</>
+          <span> Wrong Credentials....</span>
         )}
         <br />
-        <button type="button" onClick={handleLogout} className="text-xl">
+        <button type="button" onClick={handleLogout} className="text-xl text-red-500">
           SignOut
         </button>
       </div>
 
-      <br />
-      <br />
-
-      <h2 className="text-2xl">Enter the your personal details</h2>
-
-      <br />
-      <br />
+      <h2 className="text-2xl p-20">Enter the your personal details</h2>
 
       <div >
         <form className="flex justify-between" onSubmit={handleSubmit}>
@@ -123,14 +156,17 @@ const LogInpage = () => {
           <button type="submit" className="flex justify-center"> Submit</button>
         </form>
       </div>
-      <br />
 
-      <button onClick={handleveiwchange} >Veiw Saved</button>
-      <div className="flex justify-center p-10">
+      <button onClick={handleVeiwchange} className="m-10">Veiw Saved</button>
+      <button onClick={handleVeiwchangeAge} className="m-10">Veiw Data Sorted by Age</button>
+      <button onClick={handleVeiwchangeName} className="m-10">Veiw Data Sorted by Name</button>
+      <button onClick={handleVeiwchangeLocation} className="m-10">Veiw Data Sorted by Location</button>
+
+      <div className="flex justify-center p-10 ">
       {fetchedData.length > 0 ? (
         <ul>
-          {fetchedData.map((item) => (
-            <li >
+          {fetchedData.map((item, index) => (
+            <li key={index}>
              <>Name: </> {item.Name}
              <br/>
              <>Age: </>{item.Age}

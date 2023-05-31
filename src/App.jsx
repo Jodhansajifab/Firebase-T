@@ -9,7 +9,7 @@ import LogInpage from "./components/LogInpage";
 function App() {
   return (
     <BrowserRouter>
-      <div className="bg-[#4c4949] max-w-screen-2xl">
+      <div className="bg-[#4c4949] text-sky-400">
         <ul>
           <li>
             <Link to="/">
