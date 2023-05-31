@@ -88,8 +88,10 @@ const LogInpage = () => {
     <>
       <div className="flex justify-between">
         {User ? (
-          <p className="text-xl font-bold ">
-            Welcome {User.email}...How are you?
+          <p className="text-xl flex">
+            Welcome..
+            <p className="font-bold underline decoration-sky-500">{User.email}</p>
+            ...How are you?
           </p>
         ) : (
           <> Wrong Credentials....</>
@@ -124,7 +126,6 @@ const LogInpage = () => {
       <br />
 
       <button onClick={handleveiwchange} >Veiw Saved</button>
-
       <div className="flex justify-center p-10">
       {fetchedData.length > 0 ? (
         <ul>
